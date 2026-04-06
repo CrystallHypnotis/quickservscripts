@@ -20,11 +20,19 @@ done
 
 if [ -z "$DOMEN" ]; then
   echo "Домен не указан!"
-  echo "Использование: $0 -d <домен> -p <порт>"
+  echo "Использование: $0 <domen> -p <port, default 80>"
   exit 1
 fi
 
 echo "Обработка $DOMEN с использованием порта $PORT...."
+
+if [[ -n "$(ss - tulpn | grep ":$(PORT)")" ]]; then
+  echo "Указанный порт занят!"
+  echo "Использование: $0 <domen> -p <port, default 80>"
+  exit 1
+fi
+
+mkdir -p ~/cert/${DOMEN}
 
 ~/.acme.sh/acme.sh --issue --standalone -d "$DOMEN" --httpport "$PORT" --keylength ec-256
 
