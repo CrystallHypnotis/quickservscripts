@@ -26,7 +26,7 @@ fi
 
 echo "Обработка $DOMEN с использованием порта $PORT...."
 
-if [[ -n "$(ss - tulpn | grep ":$PORT")" ]]; then
+if [[ -n "$(ss -tulpn | grep ":$PORT ")" ]]; then
   echo "Указанный порт занят!"
   echo "Использование: $0 <domen> -p <port, default 80>"
   exit 1
