@@ -26,7 +26,7 @@ fi
 
 echo "Обработка $DOMEN с использованием порта $PORT...."
 
-if [[ -n "$(ss -tulpn | grep ":$PORT ")" ]]; then
+if [[ -n "$(ss -tulpn 2>/dev/null | grep ":${PORT} ")" ]]; then
   echo "Указанный порт занят!"
   echo "Использование: $0 <domen> -p <port, default 80>"
   exit 1
@@ -38,6 +38,6 @@ mkdir -p ~/cert/${DOMEN}
 
 ~/.acme.sh/acme.sh --install-cert -d "$DOMEN" \
     --key-file ~/cert/"$DOMEN"/privkey.pem \
-    --fullchain-file ~/cert/"$DOMEN"/fullchain.pem 
+    --fullchain-file ~/cert/"$DOMEN"/fullchain.pem \
+    --reloadcmd "echo 'Готово! Сертификат для $DOMEN будет обновляться автоматически.'"
 
-echo "Готово! Сертификат для $DOMEN будет обновляться автоматически."
